@@ -66,10 +66,30 @@ Steps:
 Check out [examples](https://github.com/riboseinc/terraform-aws-authenticating-secgroup/tree/master/examples) for more details
 
 ```terraform
-/* where should this API deployed to, more info https://www.terraform.io/docs/providers/aws */
-provider "aws" {
-  region  = "us-west-2"
+variable "aws_account_id" {
+  description = "AWS account id"
 }
+
+variable "aws_access_key" {
+  description = "AWS access key"
+}
+
+variable "aws_secret_key" {
+  description = "AWS secret key"
+}
+
+variable "aws_region" {
+  description = "AWS region"
+  default     = "us-west-2"
+}
+
+# where should this API deployed to
+provider "aws" {
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
+  region     = "${var.aws_region}"
+}
+
 
 /* main configuration */
 module "dynamic-secgroup" {
@@ -80,7 +100,7 @@ module "dynamic-secgroup" {
   # Description of this secgroup
   description     = "example usage of terraform-aws-authenticating-secgroup"
 
-  //  # Time to expiry for every rule.
+  # Time to expiry for every rule.
   time_to_expire  = 600
 
   security_groups = [

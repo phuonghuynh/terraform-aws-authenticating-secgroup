@@ -1,3 +1,29 @@
+variable "aws_account_id" {
+  description = "AWS account id"
+}
+
+variable "aws_access_key" {
+  description = "AWS access key"
+}
+
+variable "aws_secret_key" {
+  description = "AWS secret key"
+}
+
+variable "aws_region" {
+  description = "AWS region"
+  default     = "us-west-2"
+}
+
+# where should this API deployed to
+provider "aws" {
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
+  region     = "${var.aws_region}"
+}
+
+
+# main configuration
 module "dynamic-secgroup" {
   source          = "../"
 
@@ -6,7 +32,7 @@ module "dynamic-secgroup" {
   # Description of this secgroup
   description     = "example usage of terraform-aws-authenticating-secgroup"
 
-  //  # Time to expiry for every rule.
+  # Time to expiry for every rule.
   time_to_expire  = 600
 
   security_groups = [
@@ -62,6 +88,7 @@ module "dynamic-secgroup" {
   ]
 }
 
+# policy
 resource "aws_iam_policy" "this" {
   description = "Policy Developer SSH Access"
   policy      = "${data.aws_iam_policy_document.access_policy_doc.json}"
@@ -78,6 +105,7 @@ data "aws_iam_policy_document" "access_policy_doc" {
   }
 }
 
+# some outputs
 output "dynamic-secgroup-api-invoke-url" {
   value = "${module.dynamic-secgroup.invoke_url}"
 }
