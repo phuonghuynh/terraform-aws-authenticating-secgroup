@@ -66,35 +66,24 @@ Steps:
 Check out [examples](https://github.com/riboseinc/terraform-aws-authenticating-secgroup/tree/master/examples) for more details
 
 ```terraform
-variable "aws_account_id" {
+variable "aws-account-id" {
   description = "AWS account id"
 }
 
-variable "aws_access_key" {
-  description = "AWS access key"
-}
-
-variable "aws_secret_key" {
-  description = "AWS secret key"
-}
-
-variable "aws_region" {
+variable "aws-region" {
   description = "AWS region"
   default     = "us-west-2"
 }
 
 # where should this API deployed to
 provider "aws" {
-  access_key = "${var.aws_access_key}"
-  secret_key = "${var.aws_secret_key}"
-  region     = "${var.aws_region}"
+  region = "${var.aws-region}"
 }
-
 
 /* main configuration */
 module "dynamic-secgroup" {
   source = "riboseinc/authenticating-secgroup/aws"
-
+  
   name            = "example-terraform-aws-authenticating-secgroup"
 
   # Description of this secgroup

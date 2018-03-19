@@ -160,7 +160,7 @@ class SecGroup:
         last_error, failure_rules = None, []
         for rule in rules:  # retry one by one rule
             kwargs['rules'] = [rule]
-            ips = self.__get_aws_ip_permissions(kwargs)
+            ips = self.__get_aws_ip_permissions(**kwargs)
             if not ips: continue
 
             for fn_retry in fn_retries:

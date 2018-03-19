@@ -1,6 +1,6 @@
-variable "aws-account-id" {
-  description = "AWS account id"
-}
+//variable "aws-account-id" {
+//  description = "AWS account id"
+//}
 
 variable "aws-region" {
   description = "AWS region"
@@ -9,10 +9,9 @@ variable "aws-region" {
 
 # where should this API deployed to
 provider "aws" {
+  region = "${var.aws-region}"
   alias = "default"
-//  region = "us-west-2"
 }
-
 
 # main configuration
 module "dynamic-secgroup" {
@@ -20,15 +19,15 @@ module "dynamic-secgroup" {
 
   name            = "example-terraform-aws-authenticating-secgroup"
 
+  providers {
+    "aws" = "aws.default"
+  }
+
   # Description of this secgroup
   description     = "example usage of terraform-aws-authenticating-secgroup"
 
   # Time to expiry for every rule.
   time_to_expire  = 600
-
-  providers = {
-    aws = "aws.default"
-  }
 
   security_groups = [
     {
