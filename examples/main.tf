@@ -1,25 +1,16 @@
-variable "aws_account_id" {
+variable "aws-account-id" {
   description = "AWS account id"
 }
 
-variable "aws_access_key" {
-  description = "AWS access key"
-}
-
-variable "aws_secret_key" {
-  description = "AWS secret key"
-}
-
-variable "aws_region" {
+variable "aws-region" {
   description = "AWS region"
   default     = "us-west-2"
 }
 
 # where should this API deployed to
 provider "aws" {
-  access_key = "${var.aws_access_key}"
-  secret_key = "${var.aws_secret_key}"
-  region     = "${var.aws_region}"
+  alias = "default"
+//  region = "us-west-2"
 }
 
 
@@ -34,6 +25,10 @@ module "dynamic-secgroup" {
 
   # Time to expiry for every rule.
   time_to_expire  = 600
+
+  providers = {
+    aws = "aws.default"
+  }
 
   security_groups = [
     {
